@@ -188,9 +188,31 @@ export default async function callbackHandler(params: {
         // We don't want to have two accounts with the same email address, and we don't
         // want to link them in case it's not safe to do so, so instead we prompt the user
         // to sign in via email to verify their identity and then link the accounts.
-        throw new AccountNotLinkedError(
-          "Another account already exists with the same e-mail address"
-        )
+        if (true) {
+          await linkAccount({ ...account, userId: userByEmail.id })
+          await events.linkAccount?.({
+            user: userByEmail,
+            account,
+            profile,
+          })
+
+          session = useJwtSession
+            ? {}
+            : await createSession({
+                sessionToken: generateSessionToken(),
+                userId: userByEmail.id,
+                expires: fromDate(options.session.maxAge),
+              })
+          return {
+            session,
+            user: userByEmail,
+            isNewUser,
+          }
+        } else {
+          throw new AccountNotLinkedError(
+            "Another account already exists with the same e-mail address"
+          )
+        }
       }
       // If the current user is not logged in and the profile isn't linked to any user
       // accounts (by email or provider account id)...
