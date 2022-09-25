@@ -205,6 +205,13 @@ export interface NextAuthOptions {
    * [Documentation](https://next-auth.js.org/configuration/options#cookies) | [Usage example](https://next-auth.js.org/configuration/options#example)
    */
   cookies?: Partial<CookiesOptions>
+
+  /**
+   * If true, when signing in, next-auth will check for existing users by the same email provided by the provider.
+   * If an existing user is found, the user will be signed in and the account provider will be linked to the existing user.
+   * If no existing user is found, a new user will be created like normal
+   */
+  linkOAuthWithExistingEmail?: boolean
 }
 
 /**
@@ -546,6 +553,7 @@ export interface InternalOptions<T extends ProviderType = any> {
   adapter?: Adapter
   callbacks: CallbacksOptions
   cookies: CookiesOptions
+  linkOAuthWithExistingEmail: boolean
   callbackUrl: string
 }
 

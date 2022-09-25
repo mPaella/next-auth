@@ -108,6 +108,7 @@ export async function init({
     callbacks: { ...defaultCallbacks, ...userOptions.callbacks },
     logger,
     callbackUrl: url.origin,
+    linkOAuthWithExistingEmail: userOptions.linkOAuthWithExistingEmail ?? true,
   }
 
   // Init cookies
